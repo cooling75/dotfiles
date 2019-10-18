@@ -22,9 +22,6 @@ plugins=(
   web-search
 )
 
-alias ssh_hypriot="ssh pirate@192.168.0.44"
-alias ssh_LauPi2nd="ssh pi@192.168.178.33"
-alias ssh_LauPi3rd="ssh pi@192.168.178.31"
 alias python=/usr/local/bin/python3
 alias cls=clear
 
