@@ -2,3 +2,11 @@ set background=light
 set expandtab
 set ts=2
 set number
+set autoindent
+set encoding=utf-8
+set noerrorbells
+set title
+set ruler
+set cursorline
+syntax enable
+set linebreak
