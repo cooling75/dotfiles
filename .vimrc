@@ -1,4 +1,4 @@
-set background=light
+set background=dark
 set expandtab
 set ts=2
 set number
