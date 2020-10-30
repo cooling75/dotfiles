@@ -1,0 +1,6 @@
+alias ll='ls -al'
+alias la='ls -A'
+alias l='ls -CF'
+alias cls='clear'
+alias doc='docker-compose'
+alias hig='history | grep'
