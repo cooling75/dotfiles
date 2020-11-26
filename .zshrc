@@ -1,29 +1,76 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# aliases
+alias cls=clear
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/janlaudahn/.oh-my-zsh"
+# export ZSH="/path/to/.oh-my-zsh"
+
+# add autocompletion for kubectl
+# source <(kubectl completion zsh)
+
+# change autocompletion
+zstyle ':completion:*' matcher-list '' 'l:|=[^_]* r:|=*'
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
-# ZSH_THEME="agnoster"
+POWERLEVEL9K_MODE='nerdfont-complete'
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
-POWERLEVEL9K_MODE='nerdfont-complete'
+DEFAULT_USER=janl
+POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
 
-plugins=(
-  git
-  iterm2
-  osx
-  docker
-  web-search
-)
+# powerlevel9k config
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 
-alias python=/usr/local/bin/python3
-alias cls=clear
+# prompt elements
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon ssh context dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status load ip time battery)
+
+# battery  colors
+POWERLEVEL9K_BATTERY_CHARGED_BACKGROUND=035
+POWERLEVEL9K_BATTERY_CHARGING_BACKGROUND=040
+POWERLEVEL9K_BATTERY_LOW_BACKGROUND=009
+POWERLEVEL9K_BATTERY_DISCONNECTED_BACKGROUND=011
+
+POWERLEVEL9K_BATTERY_CHARGED_FOREGROUND=015
+POWERLEVEL9K_BATTERY_CHARGING_FOREGROUND=000
+POWERLEVEL9K_BATTERY_LOW_FOREGROUND=000
+POWERLEVEL9K_BATTERY_DISCONNECTED_FOREGROUND=000
+
+# icon colors
+POWERLEVEL9K_OS_ICON_BACKGROUND=032
+POWERLEVEL9K_OS_ICON_FOREGROUND=015
+
+# context colors
+POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND=032
+POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND=015
+POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=160
+POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=000
+POWERLEVEL9K_CONTEXT_SUDO_BACKGROUND=002
+POWERLEVEL9K_CONTEXT_SUDO_FOREGROUND=015
+POWERLEVEL9K_CONTEXT_REMOTE_BACKGROUND=202
+POWERLEVEL9K_CONTEXT_REMOTE_FOREGROUND=000
+POWERLEVEL9K_CONTEXT_REMOTE_SUDO_BACKGROUND=203
+POWERLEVEL9K_CONTEXT_REMOTE_SUDO_FOREGROUND=000
+
+# dir colors
+POWERLEVEL9K_DIR_HOME_BACKGROUND=032
+POWERLEVEL9K_DIR_HOME_FOREGROUND=015
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND=032
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND=015
+
+# status colors
+POWERLEVEL9K_STATUS_OK_BACKGROUND=000
+POWERLEVEL9K_STATUS_ERROR_BACKGROUND=000
+
+# time colors
+POWERLEVEL9K_TIME_BACKGROUND=032
+POWERLEVEL9K_TIME_FOREGROUND=015
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -83,7 +130,15 @@ alias cls=clear
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(git)
+plugins=(
+  git
+  # kubectl
+  # history
+  # helm
+  colorize
+  colored-man-pages
+  ansible
+  )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,70 +167,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-alias pip=/usr/local/bin/pip
-
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="white"
-POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="black"
-
-zsh_wifi_signal(){
-        local output=$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport -I)
-        local airport=$(echo $output | grep 'AirPort' | awk -F': ' '{print $2}')
-
-        if [ "$airport" = "Off" ]; then
-                local color='%F{black}'
-                echo -n "%{$color%}Wifi Off"
-        else
-                local ssid=$(echo $output | grep ' SSID' | awk -F': ' '{print $2}')
-                local speed=$(echo $output | grep 'lastTxRate' | awk -F': ' '{print $2}')
-                local color='%F{black}'
-
-                [[ $speed -gt 100 ]] && color='%F{black}'
-                [[ $speed -lt 50 ]] && color='%F{red}'
-
-                echo -n "%{$color%}$speed Mbps \uf1eb%{%f%}" # removed char not in my PowerLine font
-        fi
-}
-
-POWERLEVEL9K_CONTEXT_TEMPLATE='%n'
-POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='white'
-POWERLEVEL9K_BATTERY_CHARGING='yellow'
-POWERLEVEL9K_BATTERY_CHARGED='green'
-POWERLEVEL9K_BATTERY_DISCONNECTED='$DEFAULT_COLOR'
-POWERLEVEL9K_BATTERY_LOW_THRESHOLD='10'
-POWERLEVEL9K_BATTERY_LOW_COLOR='red'
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
-#POWERLEVEL9K_BATTERY_STAGES=($'\u2581 ' $'\u2582 ' $'\u2583 ' $'\u2584 ' $'\u2585 ' $'\u2586 ' $'\u2587 ' $'\u2588 ')
-POWERLEVEL9K_BATTERY_ICON='\uf1e6 '
-POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="❱ "
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
-POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
-
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context battery dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status time dir_writable ip ram load background_jobs)
-
-#POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-
-POWERLEVEL9K_TIME_FORMAT="%D{\uf017 %H:%M \uf073 %d/%m/%y}"
-POWERLEVEL9K_TIME_BACKGROUND='white'
-POWERLEVEL9K_RAM_BACKGROUND='yellow'
-POWERLEVEL9K_LOAD_CRITICAL_BACKGROUND="white"
-POWERLEVEL9K_LOAD_WARNING_BACKGROUND="white"
-POWERLEVEL9K_LOAD_NORMAL_BACKGROUND="white"
-POWERLEVEL9K_LOAD_CRITICAL_FOREGROUND="red"
-POWERLEVEL9K_LOAD_WARNING_FOREGROUND="yellow"
-POWERLEVEL9K_LOAD_NORMAL_FOREGROUND="black"
-POWERLEVEL9K_LOAD_CRITICAL_VISUAL_IDENTIFIER_COLOR="red"
-POWERLEVEL9K_LOAD_WARNING_VISUAL_IDENTIFIER_COLOR="yellow"
-POWERLEVEL9K_LOAD_NORMAL_VISUAL_IDENTIFIER_COLOR="green"
-POWERLEVEL9K_HOME_ICON=''
-POWERLEVEL9K_HOME_SUB_ICON=''
-POWERLEVEL9K_FOLDER_ICON=''
-POWERLEVEL9K_STATUS_VERBOSE=true
-POWERLEVEL9K_STATUS_CROSS=true3
-export PATH="/usr/local/opt/ruby/bin:$PATH"
