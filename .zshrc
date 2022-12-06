@@ -1,11 +1,40 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="/home/janl/.local/share/gem/ruby/3.0.0/bin:$PATH"
+
+export GPG_TTY=$(tty)
+
+export FZF_BASE=/usr/bin/fzf
+# export FZF_DEFAULT_COMMAND="fzf"
+export FZF_DEFAULT_OPTS="--preview='head -n 100 {}' --bind 'ctrl-space:execute(bat {})'"
+export DISABLE_FZF_AUTO_COMPLETION="false"
+export DISABLE_FZF_KEY_BINDINGS="false"
 
 # aliases
-alias cls=clear
+alias cat='bat '
+alias ll='ls -al'
+alias la='ls -A'
+alias l='ls -CF'
+alias cls='clear'
+alias doc='docker-compose'
+alias hig='history | grep'
+alias addssh='ssh-add ~/.ssh/manjaro_id_rsa'
+alias influxShell='k exec -i -t -n home-mon influx-influxdb-0 /bin/bash'
+
+# terraform
+alias tfpl='terraform plan'
+alias tfap='terraform apply'
+alias tfds='terraform destroy'
 
 # Path to your oh-my-zsh installation.
-# export ZSH="/path/to/.oh-my-zsh"
+export ZSH="/home/janl/.oh-my-zsh"
 
 # add autocompletion for kubectl
 # source <(kubectl completion zsh)
@@ -18,18 +47,19 @@ zstyle ':completion:*' matcher-list '' 'l:|=[^_]* r:|=*'
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
+# POWERLEVEL9K_MODE='awesome-fontconfig'
 POWERLEVEL9K_MODE='nerdfont-complete'
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 DEFAULT_USER=janl
 POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
 
-# powerlevel9k config
+# powerlevel10k config
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 
 # prompt elements
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon ssh context dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status load ip time battery)
+POWERLEVEL10K_LEFT_PROMPT_ELEMENTS=(os_icon ssh context dir vcs)
+POWERLEVEL10K_RIGHT_PROMPT_ELEMENTS=(status load ip time battery)
 
 # battery  colors
 POWERLEVEL9K_BATTERY_CHARGED_BACKGROUND=035
@@ -131,13 +161,15 @@ POWERLEVEL9K_TIME_FOREGROUND=015
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  fzf
   git
-  # kubectl
-  # history
-  # helm
-  colorize
+  kubectl
+  history
+  helm
+  terraform
+  # colorize
   colored-man-pages
-  ansible
+  # ansible
   )
 
 source $ZSH/oh-my-zsh.sh
@@ -167,3 +199,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
